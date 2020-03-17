@@ -3,10 +3,12 @@ package support
 import org.quartz.SimpleScheduleBuilder
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder
+import java.util.*
 
 object Triggers {
 
-    fun instant(name: String): Trigger {
+    fun instant(id: UUID, prefix: String = "instant-trigger"): Trigger {
+        val name = "$prefix-$id"
         return TriggerBuilder.newTrigger()
             .withIdentity(name)
             .startNow()
@@ -16,7 +18,8 @@ object Triggers {
             .build()
     }
 
-    fun inIntervals(name: String, intervalInSeconds: Int): Trigger {
+    fun inIntervals(id: UUID, intervalInSeconds: Int): Trigger {
+        val name = "interval-trigger-$id"
         return TriggerBuilder.newTrigger()
             .withIdentity(name)
             .startNow()

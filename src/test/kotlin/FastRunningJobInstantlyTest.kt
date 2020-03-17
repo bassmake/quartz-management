@@ -14,10 +14,8 @@ class FastRunningJobInstantlyTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("job-$id", 1)
 
-        val triggerName = "Trigger-$id"
-
         // very long interval so job is not triggered
-        val trigger = Triggers.inIntervals(triggerName, 100)
+        val trigger = Triggers.inIntervals(id, 100)
 
         scheduler.scheduleJob(jobDetail, trigger)
 
@@ -25,14 +23,13 @@ class FastRunningJobInstantlyTest : QuartzManagementTest() {
         Assertions.assertEquals(1, ConfirmableJob.endedCalls(jobDetail.key))
 
         val changedTrigger = TriggerBuilder.newTrigger()
-            .withIdentity(triggerName)
+            .withIdentity(trigger.key)
             .forJob(jobDetail)
             .startNow()
             .withSchedule(Schedules.instant)
             .build()
 
-        val triggerKey = TriggerKey(triggerName)
-        scheduler.rescheduleJob(triggerKey, changedTrigger)
+        scheduler.rescheduleJob(trigger.key, changedTrigger)
 
         await
             .atMost(Duration.ofSeconds(2))
@@ -46,8 +43,7 @@ class FastRunningJobInstantlyTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("job-$id", 1)
 
-        val triggerName = "Trigger-$id"
-        val trigger = Triggers.inIntervals(triggerName, 5_000)
+        val trigger = Triggers.inIntervals(id, 5_000)
 
         scheduler.scheduleJob(jobDetail, trigger)
 

@@ -13,7 +13,7 @@ class LongerRunningJobInstantlyTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("job-$id", 2)
 
-        val trigger = Triggers.instant("trigger-$id")
+        val trigger = Triggers.instant(id)
 
 
         scheduler.scheduleJob(jobDetail, trigger)
@@ -58,8 +58,8 @@ class LongerRunningJobInstantlyTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("job-$id", 2)
 
-        val trigger1 = Triggers.instant("trigger-1-$id")
-        val trigger2 = Triggers.instant("trigger-2-$id")
+        val trigger1 = Triggers.instant(id, "instant-1-")
+        val trigger2 = Triggers.instant(id, "instant-2-")
 
         scheduler.scheduleJob(jobDetail, setOf(trigger1, trigger2), false)
         Assertions.assertEquals(2, scheduler.getTriggersOfJob(jobDetail.key).size)
@@ -86,9 +86,9 @@ class LongerRunningJobInstantlyTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("job-$id", 2)
 
-        val trigger1 = Triggers.instant("trigger-1-$id")
+        val trigger = Triggers.instant(id, "instant-")
 
-        scheduler.scheduleJob(jobDetail, trigger1)
+        scheduler.scheduleJob(jobDetail, trigger)
 
         Assertions.assertEquals(1, scheduler.getTriggersOfJob(jobDetail.key).size)
 
@@ -100,9 +100,9 @@ class LongerRunningJobInstantlyTest : QuartzManagementTest() {
 
         Assertions.assertEquals(0, scheduler.getTriggersOfJob(jobDetail.key).size)
 
-        val trigger2 = Triggers.instant("trigger-2-$id")
+        val anotherTrigger = Triggers.instant(id, "another-instant-")
 
-        scheduler.scheduleJob(jobDetail, setOf(trigger2), true)
+        scheduler.scheduleJob(jobDetail, setOf(anotherTrigger), true)
 
         Assertions.assertEquals(1, scheduler.getTriggersOfJob(jobDetail.key).size)
 

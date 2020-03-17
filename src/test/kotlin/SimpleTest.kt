@@ -13,7 +13,7 @@ class SimpleTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("simple-scheduled-job-$id", 1)
 
-        val trigger = Triggers.inIntervals("Trigger-$id", 1)
+        val trigger = Triggers.inIntervals(id, 1)
 
         scheduler.scheduleJob(jobDetail, trigger)
         Assertions.assertEquals(1, scheduler.getTriggersOfJob(jobDetail.key).size)
@@ -32,7 +32,7 @@ class SimpleTest : QuartzManagementTest() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("simple-instant-job-$id", 1)
 
-        val trigger = Triggers.instant("Trigger-$id")
+        val trigger = Triggers.instant(id)
 
         scheduler.scheduleJob(jobDetail, trigger)
         Assertions.assertEquals(1, scheduler.getTriggersOfJob(jobDetail.key).size)
