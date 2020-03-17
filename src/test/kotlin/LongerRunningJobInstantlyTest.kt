@@ -82,7 +82,7 @@ class LongerRunningJobInstantlyTest : QuartzManagementTest() {
     }
 
     @Test
-    fun `that not running job can be run twice`() {
+    fun `that not running job will run only twice even if multiple reschedules are created`() {
         val id = UUID.randomUUID()
         val jobDetail = ConfirmableJob.create("job-$id", 2)
 
@@ -102,6 +102,8 @@ class LongerRunningJobInstantlyTest : QuartzManagementTest() {
 
         val anotherTrigger = Triggers.instant(id, "another-instant-")
 
+        scheduler.scheduleJob(jobDetail, setOf(anotherTrigger), true)
+        scheduler.scheduleJob(jobDetail, setOf(anotherTrigger), true)
         scheduler.scheduleJob(jobDetail, setOf(anotherTrigger), true)
 
         Assertions.assertEquals(1, scheduler.getTriggersOfJob(jobDetail.key).size)
