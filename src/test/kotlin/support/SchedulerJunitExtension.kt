@@ -47,6 +47,7 @@ class SchedulerJunitExtension : BeforeAllCallback {
         logger.info { "Applying DB migrations" }
         val database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(JdbcConnection(connection))
         val liquibase = Liquibase("liquibase/changelog.xml", ClassLoaderResourceAccessor(), database)
+        liquibase.dropAll()
         val contexts  = Contexts()
         liquibase.update(contexts)
         logger.info { "DB migrations applied" }

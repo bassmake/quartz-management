@@ -1,4 +1,3 @@
-import mu.KotlinLogging
 import org.awaitility.kotlin.await
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -6,8 +5,6 @@ import support.ConfirmableJob
 import support.Triggers
 import java.time.Duration
 import java.util.*
-
-private val logger = KotlinLogging.logger {}
 
 class PeriodicJobAndInstantTriggerTest : QuartzManagementTest() {
 
@@ -38,16 +35,6 @@ class PeriodicJobAndInstantTriggerTest : QuartzManagementTest() {
         scheduler.getTriggersOfJob(jobDetail.key).forEach {
             Assertions.assertNotNull(it.previousFireTime)
         }
-
-    }
-
-    @Test
-    fun `that periodically running job running instantly cannot be triggered instantly`() {
-
-        val id = UUID.randomUUID()
-        val jobDetail = ConfirmableJob.create("job-$id", 1)
-
-        val trigger = Triggers.instant(id)
 
     }
 

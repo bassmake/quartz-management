@@ -2,7 +2,6 @@ import org.awaitility.kotlin.await
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.quartz.TriggerBuilder
-import org.quartz.TriggerKey
 import support.*
 import java.time.Duration
 import java.util.*
